@@ -10,5 +10,10 @@ namespace FrameworklessServer
         {
             AllUsers = new List<User>{new User("cindy")};
         }
+
+        public void Add(User user)
+        {
+            AllUsers.Add(user);
+        }
     }
 }
