@@ -5,4 +5,15 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="UsersList.json" />
+      <Content Include="UsersList.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
