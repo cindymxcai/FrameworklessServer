@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using FrameworklessServer;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace FrameworklessServerTests
@@ -16,7 +15,6 @@ namespace FrameworklessServerTests
              allUsers.RemoveAll(user => user.Name != "Cindy");
              users.CreateNewJArray(allUsers);
         }
-        
         
         [Fact]
         public void GivenListOfUsersShouldHaveCindyByDefault()
@@ -75,7 +73,20 @@ namespace FrameworklessServerTests
             var users = new Users();
             Assert.Throws<ArgumentException>(() => users.Delete("Cindy"));
             ResetList();
+        }
 
+        [Fact]
+        public void GivenUserNameShouldReturnNameFromList()
+        {
+            var users = new Users();
+            users.Add(new User("Bob"));
+            users.Add(new User("Mary"));
+
+            var result = users.Get("Bob");
+            
+            var expected = new User("Bob");
+            
+            Assert.Equal(expected.Name, result.Name);
         }
     }
 }

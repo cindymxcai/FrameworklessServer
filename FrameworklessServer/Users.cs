@@ -52,5 +52,11 @@ namespace FrameworklessServer
 
             return JsonConvert.DeserializeObject<List<User>>(jsonString);
         }
+
+        public User Get(string name)
+        {
+            var users = GetAllUsers();
+            return users.Find(p => p.Name == name);
+        }
     }
 }
