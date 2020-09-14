@@ -1,3 +1,4 @@
+using System.Linq;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
@@ -6,7 +7,8 @@ namespace FrameworklessServer
     {
         public Response Write(Users users)
         {
-            throw new System.NotImplementedException();
+            var names = string.Join("\n", users.GetAllUsers().Select(u => u.Name));
+            return new Response(names, "200");
         }
     }
 }

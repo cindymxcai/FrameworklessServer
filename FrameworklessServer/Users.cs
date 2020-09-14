@@ -37,15 +37,15 @@ namespace FrameworklessServer
         {
             var newUsers = allUsers.Select(t => new JObject(new JProperty("Name", t.Name)));
             var newJson = new JArray(newUsers);
-            var streamWriter = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json"));
+            using StreamWriter streamWriter = File.CreateText(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json" ));
             streamWriter.WriteLine(newJson);
+            // var streamWriter = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json" ));
             
-            streamWriter.Close();
         }
 
-        public List<User> GetAllUsers()
+        public  List<User> GetAllUsers()
         {
-            var streamReader = new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json"));
+            var streamReader =  new StreamReader(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json"));
             var jsonString = streamReader.ReadToEnd();
            
             streamReader.Close();
