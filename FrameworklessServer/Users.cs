@@ -15,7 +15,7 @@ namespace FrameworklessServer
         {
             _owner = GetAllUsers()[0];
         }
-
+        
         public void Add(User user)
         {
             var allUsers = GetAllUsers();

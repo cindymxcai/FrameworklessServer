@@ -7,7 +7,6 @@ namespace FrameworklessServerTests
 {
     public class UserTests
     {
-
         private void ResetList()
         {
              var users = new Users();
@@ -87,6 +86,7 @@ namespace FrameworklessServerTests
             var expected = new User("Bob");
             
             Assert.Equal(expected.Name, result.Name);
+            ResetList();
         }
     }
 }
