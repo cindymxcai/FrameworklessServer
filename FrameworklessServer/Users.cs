@@ -58,5 +58,6 @@ namespace FrameworklessServer
             var users = GetAllUsers();
             return users.Find(p => p.Name == name);
         }
+        
     }
 }
