@@ -78,9 +78,9 @@ namespace FrameworklessServerTests
             _users.Add(new User("Bob"));
             _users.Add(new User("Mary"));
 
-            var result = _users.Get("Bob");
+            var result = _users.Get("Mary");
             
-            var expected = new User("Bob");
+            var expected = new User("Mary");
             
             Assert.Equal(expected.Name, result.Name);
             ResetList();

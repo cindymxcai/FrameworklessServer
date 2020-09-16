@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using FrameworklessServer;
 using Xunit;
@@ -8,21 +9,23 @@ namespace FrameworklessServerTests
     public class RoutingTests
     {
         [Theory]
-        [InlineData("http://localhost:8080/", typeof(IndexGreetingResponse))]
-        [InlineData("http://localhost:8080/users", typeof(GetUsersResponse))]
-
-        public void GivenUrlShouldReturnCorrectRequestType(string url, Type expectedType)
+        [MemberData(nameof(UriData))]
+        public void GivenUrlShouldReturnCorrectRequestType(Uri url, Type expectedType)
         {
             var router = new Router();
-            var result = router.GetRequestControl(url);
+            var result = router.GetRequestControl(url.Segments );
             Assert.IsType(expectedType, result);
         }
-        
-        [Fact]
-        public void GivenInvalidUrlShouldThrowException()
+
+        public static IEnumerable<object[]> UriData()
         {
-            var router = new Router();
-            Assert.Throws<DirectoryNotFoundException>(() => router.GetRequestControl("http://localhost:8080/aninvalidurl"));
+            yield return new object[]{ new Uri("http://localhost:8080/"), typeof(IndexGreetingResponse)};
+            yield return new object[] {new Uri("http://localhost:8080/users"), typeof(GetUsersResponse)};
+            yield return new object[] {new Uri("http://localhost:8080/users/cindy"), typeof(GetSingleUserResponse) };
+            yield return new object[] {new Uri("http://localhost:8080/invalidurl"), typeof(InvalidUrlResponse) };
+
+            
         }
+        
     }
 }

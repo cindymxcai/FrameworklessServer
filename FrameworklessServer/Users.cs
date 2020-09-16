@@ -56,7 +56,7 @@ namespace FrameworklessServer
         public User Get(string name)
         {
             var users = GetAllUsers();
-            return users.Find(p => p.Name == name);
+            return users.Find(p => String.Equals(p.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
         
     }
