@@ -1,7 +1,9 @@
+using System.Net;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
 {
+    
     public class GetSingleUserResponse : IResponse
     {
         private readonly string _name;
@@ -11,10 +13,10 @@ namespace FrameworklessServer
             _name = name;
         }
 
-        public Response Write(Users users)
+        public Response Write(UsersService usersService)
         {
-            var user = users.Get(_name);
-            return new Response(user.Name, "200");
+            var user = usersService.Get(_name);
+            return new Response{Body = user.Name, StatusCode = HttpStatusCode.OK};
         }
     }
 }

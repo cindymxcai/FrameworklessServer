@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using FrameworklessServer;
 using Xunit;
 
@@ -6,12 +7,12 @@ namespace FrameworklessServerTests
 {
     public class CommandTests
     {
-        private readonly Users _users = new Users();
+        private readonly UsersService _usersService = new UsersService();
         private void ResetList()
         {
-            var  allUsers = _users.GetAllUsers();
+            var  allUsers = _usersService.GetAllUsers();
             allUsers.RemoveAll(user => user.Name != "Cindy");
-            _users.CreateNewJArray(allUsers);
+            _usersService.CreateNewJArray(allUsers);
         }
         
         [Fact]
@@ -19,11 +20,11 @@ namespace FrameworklessServerTests
         {
             var usersResponse = new GetUsersResponse();
 
-            _users.Add(new User("Bob"));
-            _users.Add(new User("Mary"));
+            _usersService.Add(new User("Bob"));
+            _usersService.Add(new User("Mary"));
             
-            var expected = new Response("Cindy\nBob\nMary", "200");
-            var result = usersResponse.Write(_users);
+            var expected = new Response{Body ="Cindy\nBob\nMary", StatusCode = HttpStatusCode.OK};
+            var result = usersResponse.Write(_usersService);
 
             Assert.Equal(expected.Body, result.Body);
             Assert.Equal(expected.StatusCode, result.StatusCode);
@@ -35,8 +36,8 @@ namespace FrameworklessServerTests
         {
             var indexGreeting = new IndexGreetingResponse();
             
-            var expected = new Response( $"Hello Cindy - the time on the server is {DateTime.Now.ToShortTimeString()} on {DateTime.Now.ToLongDateString()}", "200");
-            var result = indexGreeting.Write(_users);
+            var expected = new Response{Body = $"Hello Cindy - the time on the server is {DateTime.Now.ToShortTimeString()} on {DateTime.Now.ToLongDateString()}", StatusCode = HttpStatusCode.OK};
+            var result = indexGreeting.Write(_usersService);
 
             Assert.Equal(expected.Body, result.Body);
             Assert.Equal(expected.StatusCode, result.StatusCode);
@@ -46,11 +47,11 @@ namespace FrameworklessServerTests
         [Fact]
         public void ShouldReturnCorrectResponseWhenExecuted()
         {
-            var userResponse = new GetOneUserResponse("Bob");
-            _users.Add(new User("Bob"));
+            var userResponse = new GetSingleUserResponse("Bob");
+            _usersService.Add(new User("Bob"));
 
-            var result = userResponse.Write(_users);
-            var expected = new Response("Bob", "200");
+            var result = userResponse.Write(_usersService);
+            var expected = new Response{Body ="Bob", StatusCode = HttpStatusCode.OK};
 
             Assert.Equal(expected.Body, result.Body);
             Assert.Equal(expected.StatusCode, result.StatusCode);
@@ -58,21 +59,5 @@ namespace FrameworklessServerTests
             ResetList();
         }
         
-    }
-
-    public class GetOneUserResponse
-    {
-        private readonly string _user;
-
-        public GetOneUserResponse(string user)
-        {
-            _user = user;
-        }
-
-        public Response Write(Users users)
-        {
-            var person = users.Get(_user);
-            return new Response(person.Name, "200");
-        }
     }
 }

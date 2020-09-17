@@ -11,6 +11,9 @@
 
     <ItemGroup>
       <None Remove="UsersList.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Include="UsersList.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

@@ -1,15 +1,11 @@
+using System.Net;
+
 namespace FrameworklessServer
 {
     public class Response
     {
-        public string Body { get; }
+        public string Body { get; set; }
         
-        public string StatusCode { get; }
-
-        public Response(string body, string statusCode)
-        {
-            Body = body;
-            StatusCode = statusCode;
-        }
+        public HttpStatusCode StatusCode { get; set; }
     }
 }

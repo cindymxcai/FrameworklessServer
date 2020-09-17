@@ -4,6 +4,6 @@ namespace FrameworklessServerTests
 {
     public interface IResponse
     {
-        Response Write(Users users);
+        Response Write(UsersService usersService);
     }
 }

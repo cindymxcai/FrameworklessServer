@@ -8,7 +8,7 @@ namespace FrameworklessServer
         {
             Console.WriteLine("Hello World!");
             var router = new Router();
-            var users = new Users();
+            var users = new UsersService();
             var server = new Server(router, users);
             server.Start();
         }

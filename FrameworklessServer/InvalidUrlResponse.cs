@@ -1,13 +1,14 @@
+using System.Net;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
 {
     public class InvalidUrlResponse : IResponse
     {
-        public Response Write(Users users)
+        public Response Write(UsersService usersService)
         {
-            
-            return new Response("404 Page Not Found", "404");
+
+            return new Response {Body = "404 Page Not Found", StatusCode = HttpStatusCode.NotFound};
         }
     }
 }

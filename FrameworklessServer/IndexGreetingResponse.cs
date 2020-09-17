@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
 {
     public class IndexGreetingResponse : IResponse
     {
-        public Response Write(Users users)
+        public Response Write(UsersService usersService)
         {
-            var responseBody = FormatBody(users.GetAllUsers());
-            return new Response(responseBody, "200");
+            var responseBody = FormatBody(usersService.GetAllUsers());
+            return new Response{Body = responseBody, StatusCode = HttpStatusCode.OK};
         }
 
         private string FormatBody(List<User> users)

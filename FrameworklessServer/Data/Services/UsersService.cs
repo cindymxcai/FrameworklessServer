@@ -7,16 +7,16 @@ using Newtonsoft.Json.Linq;
 
 namespace FrameworklessServer
 {
-    public class Users
+    public class UsersService : IUserService
     {
         private readonly User _owner;
 
-        public Users()
+        public UsersService()
         {
             _owner = GetAllUsers()[0];
         }
         
-        public void Add(User user)
+        public void Add(User user) //todo check if user already exists
         {
             var allUsers = GetAllUsers();
             allUsers.Add(user);
