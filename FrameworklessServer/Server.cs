@@ -7,15 +7,11 @@ namespace FrameworklessServer
     public class Server
     {
         private readonly Controller _controller;
-        private readonly Router _router;
-        private readonly UsersService _usersService;
         private readonly HttpListener _listener;
 
-        public Server(Controller controller, Router router, UsersService usersService)
+        public Server(Controller controller)
         {
             _controller = controller;
-            _router = router;
-            _usersService = usersService;
             _listener = new HttpListener();
             _listener.Prefixes.Add("http://*:8080/");
         }
