@@ -13,10 +13,11 @@ namespace FrameworklessServer
             _name = name;
         }
 
-        public Response Write(UsersService usersService)
+        public Response Write(IUserService usersService)
         {
             var user = usersService.Get(_name);
             return new Response{Body = user.Name, StatusCode = HttpStatusCode.OK};
         }
+        
     }
 }

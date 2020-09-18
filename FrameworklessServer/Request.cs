@@ -1,10 +1,10 @@
 using System.Net.Http;
 
-namespace FrameworklessServerTests
+namespace FrameworklessServer
 {
     public class Request
     {
         public string Path;
-        public HttpMethod Method;
+        public string Method;
     }
 }

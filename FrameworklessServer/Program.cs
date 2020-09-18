@@ -1,4 +1,5 @@
 ﻿using System;
+using FrameworklessServer.Controllers;
 
 namespace FrameworklessServer
 {
@@ -9,7 +10,8 @@ namespace FrameworklessServer
             Console.WriteLine("Hello World!");
             var router = new Router();
             var users = new UsersService();
-            var server = new Server(router, users);
+            var controller = new Controller(users);
+            var server = new Server(controller,router, users);
             server.Start();
         }
     }

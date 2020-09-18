@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FrameworklessServer;
+using FrameworklessServer.Controllers;
 using Xunit;
 
 namespace FrameworklessServerTests
@@ -13,7 +14,8 @@ namespace FrameworklessServerTests
         {
             var router = new Router();
             var users = new UsersService();
-            var server = new Server(router, users);
+            var controller = new Controller(users);
+            var server = new Server( controller, router, users);
             _ = Task.Run(server.Start);
             
             var client = new HttpClient();

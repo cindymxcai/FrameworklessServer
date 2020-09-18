@@ -8,13 +8,13 @@ namespace FrameworklessServer
 {
     public class IndexGreetingResponse : IResponse
     {
-        public Response Write(UsersService usersService)
+        public  Response Write(IUserService usersService)
         {
             var responseBody = FormatBody(usersService.GetAllUsers());
             return new Response{Body = responseBody, StatusCode = HttpStatusCode.OK};
         }
 
-        private string FormatBody(List<User> users)
+        private  string FormatBody(List<User> users)
         {
 
             var names = users.Select(user => user.Name).ToList();

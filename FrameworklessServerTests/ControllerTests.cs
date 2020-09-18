@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http;
 using FrameworklessServer;
-using FrameworklessServer.Controller;
+using FrameworklessServer.Controllers;
 using Xunit;
 
 namespace FrameworklessServerTests
@@ -11,7 +11,7 @@ namespace FrameworklessServerTests
         [Fact]
         public void ShouldReturnAllUsersWhenPathIsUsersAndMethodIsGet()
         {
-            var request = new Request{Method = HttpMethod.Get, Path = "/users"};
+            var request = new Request{Method = "GET", Path = "/users"};
             var userService = new UsersService();
             var controller = new Controller(userService);
 
@@ -25,7 +25,7 @@ namespace FrameworklessServerTests
         [Fact]
         public void ShouldReturnNotFoundResponseWhenRouteUnknown()
         {
-            var request = new Request{Method = HttpMethod.Get, Path = "/invalid"};
+            var request = new Request{Method = "GET", Path = "/invalid"};
             var userService = new UsersService();
             var controller = new Controller(userService);
 
