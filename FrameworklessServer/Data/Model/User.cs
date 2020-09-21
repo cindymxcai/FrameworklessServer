@@ -1,4 +1,4 @@
-namespace FrameworklessServer
+namespace FrameworklessServer.Data.Model
 {
     public class User
     {

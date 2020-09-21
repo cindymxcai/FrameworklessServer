@@ -1,4 +1,5 @@
 using FrameworklessServer;
+using FrameworklessServer.Data.Services;
 
 namespace FrameworklessServerTests
 {

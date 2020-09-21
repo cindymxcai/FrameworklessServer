@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using FrameworklessServer.Data.Model;
 
-namespace FrameworklessServer
+namespace FrameworklessServer.Data.Services
 {
     public interface IUserService
     {

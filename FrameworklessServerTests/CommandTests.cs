@@ -1,6 +1,8 @@
 using System;
 using System.Net;
 using FrameworklessServer;
+using FrameworklessServer.Data.Model;
+using FrameworklessServer.Data.Services;
 using Xunit;
 
 namespace FrameworklessServerTests
@@ -23,7 +25,7 @@ namespace FrameworklessServerTests
             _usersService.Add(new User("Bob"));
             _usersService.Add(new User("Mary"));
             
-            var expected = new Response{Body ="Cindy\nBob\nMary", StatusCode = HttpStatusCode.OK};
+            var expected = new Response{Body = @"[{""Name"":""Cindy""},{""Name"":""Bob""},{""Name"":""Mary""}]", StatusCode = HttpStatusCode.OK};
             var result = usersResponse.Write(_usersService);
 
             Assert.Equal(expected.Body, result.Body);

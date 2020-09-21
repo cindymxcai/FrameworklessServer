@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using FrameworklessServer.Data.Model;
+using FrameworklessServer.Data.Services;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer.Controllers
@@ -26,11 +28,6 @@ namespace FrameworklessServer.Controllers
             Console.WriteLine(request.Path);
             Console.WriteLine(request.Method);
             IResponse response;
-            if (request.Path == "/users" && request.Method == "GET")
-            {
-                response = new GetUsersResponse();
-                return response.Write(_userService);
-            }
 
             if (request.Path == "/" && request.Method == "GET")
             {
@@ -52,6 +49,28 @@ namespace FrameworklessServer.Controllers
             var name = url.Split('/').Last();
             var response = new GetSingleUserResponse(name);
             return response.Write(_userService);
+        }
+
+        public Response GetAllUsers()
+        {
+            var users = _userService.GetAllUsers();
+            var newResponse = new Response{Body = JsonSerializer.Serialize(users), StatusCode = HttpStatusCode.OK};
+            return newResponse;
+        }
+
+        public Response AddUser(User user)
+        {
+            try
+            {
+                _userService.Add(user);
+                var response = new Response{Body =  "User added", StatusCode = HttpStatusCode.OK};
+                return response;
+            }
+            catch (ArgumentNullException e)
+            {
+                var response = new Response{Body = "", StatusCode = HttpStatusCode.NotFound};
+                return response;
+            }
         }
     }
 }

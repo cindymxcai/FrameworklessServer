@@ -1,13 +1,29 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using FrameworklessServer.Controllers;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
 {
     public class Router
     {
-        public IResponse GetRequestControl(string[] url)
+        private readonly Controller _controller;
+
+        public Router(Controller controller)
+        {
+            _controller = controller;
+        }
+
+        public void HandleHttpRequest(Request request)
+        {
+            if (request.Path == "/users" && request.Method == "GET")
+            {
+                _controller.GetAllUsers();
+            }
+            
+        }
+        public IResponse HandleRequest(string[] url)
         {
             const string regex = @"\w+";
 

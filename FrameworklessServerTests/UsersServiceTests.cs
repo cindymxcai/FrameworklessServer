@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using FrameworklessServer;
+using FrameworklessServer.Data.Model;
+using FrameworklessServer.Data.Services;
 using Xunit;
 
 namespace FrameworklessServerTests
 {
-    public class UserTests
+    public class UsersServiceTests
     {
         private readonly UsersService _usersService = new UsersService();
 
@@ -15,6 +15,15 @@ namespace FrameworklessServerTests
              var  allUsers = _usersService.GetAllUsers();
              allUsers.RemoveAll(user => user.Name != "Cindy");
              _usersService.CreateNewJArray(allUsers);
+        }
+
+        [Fact]
+        public void GetAllUsersShouldReturnListOfAllUsers()
+        {
+            var result = _usersService.GetAllUsers();
+            Assert.IsType<List<User>>(result);
+            Assert.Equal("Cindy", result[0].Name);
+            ResetList();
         }
         
         [Fact]
@@ -27,7 +36,6 @@ namespace FrameworklessServerTests
             Assert.Equal(expected[0].Name, result[0].Name);
             ResetList();
         }
-        
         
         [Fact]
         public void GivenUserNameShouldAddToUsers()
@@ -44,9 +52,20 @@ namespace FrameworklessServerTests
             Assert.Equal(expected[1].Name, result[1].Name);           
 
             ResetList();
-
         }
-        
+
+        [Fact]
+        public void AddUserShouldThrowExceptionWhenUserIsNull()
+        {
+           Assert.Throws<ArgumentNullException>( () =>_usersService.Add(null));
+        }
+
+        [Fact]
+        public void AddUserShouldThrowExceptionWhenUserAlreadyExists()
+        {
+            Assert.Throws<ArgumentException>(() => _usersService.Add(new User("Cindy")));
+        }
+
         [Fact]
         public void GivenUserNameShouldDeleteFromUsers()
         {
@@ -69,6 +88,13 @@ namespace FrameworklessServerTests
         public void GivenDeletingNameOfWorldOwnerShouldThrowException()
         {
             Assert.Throws<ArgumentException>(() => _usersService.Delete("Cindy"));
+            ResetList();
+        }
+
+        [Fact]
+        public void GivenDeletingNonExistentNameShouldThrowException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _usersService.Delete("Bob"));
             ResetList();
         }
 

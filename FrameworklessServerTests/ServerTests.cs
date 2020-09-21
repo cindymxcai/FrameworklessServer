@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FrameworklessServer;
 using FrameworklessServer.Controllers;
+using FrameworklessServer.Data.Services;
 using Xunit;
 
 namespace FrameworklessServerTests

@@ -1,5 +1,6 @@
 ﻿using System;
 using FrameworklessServer.Controllers;
+using FrameworklessServer.Data.Services;
 
 namespace FrameworklessServer
 {

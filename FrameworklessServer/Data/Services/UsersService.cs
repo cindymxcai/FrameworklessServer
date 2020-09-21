@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FrameworklessServer.Data.Model;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace FrameworklessServer
+namespace FrameworklessServer.Data.Services
 {
     public class UsersService : IUserService
     {
@@ -16,9 +17,15 @@ namespace FrameworklessServer
             _owner = GetAllUsers()[0];
         }
         
-        public void Add(User user) //todo check if user already exists
+        public void Add(User user) 
         {
             var allUsers = GetAllUsers();
+            if (user == null)
+                throw new ArgumentNullException();
+
+            if (GetAllUsers().Any(u => u.Name == user.Name))
+                throw new ArgumentException();
+
             allUsers.Add(user);
             CreateNewJArray(allUsers);
         }

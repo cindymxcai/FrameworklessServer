@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using FrameworklessServer.Data.Model;
+using FrameworklessServer.Data.Services;
 using FrameworklessServerTests;
 
 namespace FrameworklessServer
@@ -16,7 +18,6 @@ namespace FrameworklessServer
 
         private  string FormatBody(List<User> users)
         {
-
             var names = users.Select(user => user.Name).ToList();
             var formattedNames = FormatNames(names);
 

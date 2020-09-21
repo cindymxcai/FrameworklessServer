@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FrameworklessServer;
+using FrameworklessServer.Controllers;
+using FrameworklessServer.Data.Services;
 using Xunit;
 
 namespace FrameworklessServerTests
@@ -12,8 +14,10 @@ namespace FrameworklessServerTests
         [MemberData(nameof(UriData))]
         public void GivenUrlShouldReturnCorrectRequestType(Uri url, Type expectedType)
         {
-            var router = new Router();
-            var result = router.GetRequestControl(url.Segments );
+            var userService = new UsersService();
+            var controller = new Controller(userService);
+            var router = new Router(controller);
+            var result = router.HandleRequest(url.Segments );
             Assert.IsType(expectedType, result);
         }
 
