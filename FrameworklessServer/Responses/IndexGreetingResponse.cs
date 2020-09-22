@@ -4,9 +4,8 @@ using System.Linq;
 using System.Net;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
-using FrameworklessServerTests;
 
-namespace FrameworklessServer
+namespace FrameworklessServer.Responses
 {
     public class IndexGreetingResponse : IResponse
     {
@@ -16,7 +15,7 @@ namespace FrameworklessServer
             return new Response{Body = responseBody, StatusCode = HttpStatusCode.OK};
         }
 
-        private  string FormatBody(List<User> users)
+        private static string FormatBody(List<User> users)
         {
             var names = users.Select(user => user.Name).ToList();
             var formattedNames = FormatNames(names);
