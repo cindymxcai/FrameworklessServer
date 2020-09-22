@@ -1,7 +1,6 @@
-using FrameworklessServer;
 using FrameworklessServer.Data.Services;
 
-namespace FrameworklessServerTests
+namespace FrameworklessServer.Responses
 {
     public interface IResponse
     {

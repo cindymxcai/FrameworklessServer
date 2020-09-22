@@ -9,6 +9,7 @@ namespace FrameworklessServerTests
     public class ControllerTests
     {
         private readonly UsersService _usersService = new UsersService();
+        //todo inject test user service
 
         private void ResetList()
         {
@@ -20,6 +21,8 @@ namespace FrameworklessServerTests
         [Fact]
         public void GetAllUsersShouldReturnListOfAllUsers()
         {
+            //todo do this!!
+            var mockUser = new TestUserService();
             var controller = new Controller(_usersService);
 
            var expectedBody = @"[{""Name"":""Cindy""}]";
@@ -81,5 +84,9 @@ namespace FrameworklessServerTests
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             ResetList();
         }
+    }
+
+    public class TestUserService
+    {
     }
 }

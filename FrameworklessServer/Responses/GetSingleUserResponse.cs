@@ -1,8 +1,7 @@
 using System.Net;
 using FrameworklessServer.Data.Services;
-using FrameworklessServerTests;
 
-namespace FrameworklessServer
+namespace FrameworklessServer.Responses
 {
     
     public class GetSingleUserResponse : IResponse

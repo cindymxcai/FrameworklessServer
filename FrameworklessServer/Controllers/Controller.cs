@@ -2,10 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
-using FrameworklessServerTests;
+using FrameworklessServer.Responses;
 using Newtonsoft.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -13,9 +12,8 @@ namespace FrameworklessServer.Controllers
 {
     public class Controller
     {
-        //todo define route for this controller. Using router?
         private readonly IUserService _userService;
-        const string regex = @"\w+";
+        private static string Regex { get; } = @"\w+";
 
         public Controller(IUserService userService)
         {
@@ -39,7 +37,7 @@ namespace FrameworklessServer.Controllers
                 case "/users" when request.Method == "DELETE":
                     return DeleteUser(ReadBody(request.Body).Name);
             }
-            if (Regex.IsMatch(request.Path, $"/users/{regex}"))
+            if (System.Text.RegularExpressions.Regex.IsMatch(request.Path, $"/users/{Regex}"))
                 return GetNameFromUrl(request.Path);
 
             response = new InvalidUrlResponse();
@@ -70,7 +68,7 @@ namespace FrameworklessServer.Controllers
             }
             catch (ArgumentNullException e)
             {
-                var response = new Response {Body = "", StatusCode = HttpStatusCode.NotFound};
+                var response = new Response {Body = e.Message, StatusCode = HttpStatusCode.NotFound};
                 return response;
             }
         }
@@ -85,7 +83,7 @@ namespace FrameworklessServer.Controllers
             }
             catch (ArgumentNullException e)
             {
-                var response = new Response {Body = "", StatusCode = HttpStatusCode.NotFound};
+                var response = new Response {Body = e.Message, StatusCode = HttpStatusCode.NotFound};
                 return response;
             }
             catch
