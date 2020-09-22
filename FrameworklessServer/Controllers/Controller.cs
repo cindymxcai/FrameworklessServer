@@ -40,12 +40,7 @@ namespace FrameworklessServer.Controllers
 
             if (System.Text.RegularExpressions.Regex.IsMatch(request.Path, $"/users/{Regex}"))
             {
-                if (request.Method == "PUT")
-                {
-                    return UpdateUser(request.Path.Split("/")[1], ReadBody(request.Body).Name);
-                }
-                return GetNameFromUrl(request.Path);
-
+                return request.Method == "PUT" ? UpdateUser(request.Path.Split("/")[2], ReadBody(request.Body).Name) : GetNameFromUrl(request.Path);
             }
 
             response = new InvalidUrlResponse();

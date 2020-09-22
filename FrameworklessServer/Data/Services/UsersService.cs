@@ -61,7 +61,7 @@ namespace FrameworklessServer.Data.Services
         public User Get(string name)
         {
             var users = GetAllUsers();
-            return users.Find(p => String.Equals(p.Name, name, StringComparison.CurrentCultureIgnoreCase));
+            return users.Find(p => string.Equals(p.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public void UpdateUser(string originalName, string newName)
@@ -71,7 +71,7 @@ namespace FrameworklessServer.Data.Services
                 throw new InvalidOperationException();
             }
             var users = GetAllUsers();
-            var userToUpdate = users.First(u => u.Name == originalName);
+            var userToUpdate = users.First(u => string.Equals(u.Name, originalName, StringComparison.CurrentCultureIgnoreCase));
             userToUpdate.Name = newName;
             CreateNewJArray(users);
             
