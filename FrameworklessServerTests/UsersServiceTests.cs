@@ -42,10 +42,7 @@ namespace FrameworklessServerTests
         {
             _usersService.Add(new User("Bob"));
             var result = _usersService.GetAllUsers();
-            var expected = new List<User>
-            {
-                new User("Cindy"), new User("Bob")
-            };
+            var expected = new List<User> {new User("Cindy"), new User("Bob")};
             
             Assert.Equal(2, result.Count);
             Assert.Equal(expected[0].Name, result[0].Name);
@@ -74,10 +71,7 @@ namespace FrameworklessServerTests
 
             Assert.Equal(3, _usersService.GetAllUsers().Count);
             _usersService.Delete("Bob");
-            var expected = new List<User>
-            {
-                new User("Cindy"), new User("Mary")
-            };
+            var expected = new List<User> {new User("Cindy"), new User("Mary")};
 
             Assert.Equal(2, _usersService.GetAllUsers().Count);
             Assert.Equal(expected[0].Name, _usersService.GetAllUsers()[0].Name);
@@ -110,6 +104,28 @@ namespace FrameworklessServerTests
             
             Assert.Equal(expected.Name, result.Name);
             ResetList();
+        }
+
+        [Fact]
+        public void GivenUserNameShouldUpdateToNewName()
+        {
+            _usersService.Add(new User("Bob"));
+            var expected = new List<User> {new User("Cindy"), new User("Bob")};
+            Assert.Equal(expected[1].Name, _usersService.GetAllUsers()[1].Name);
+
+            _usersService.UpdateUser("Bob", "Mary");
+            
+             expected = new List<User> {new User("Cindy"), new User("Mary")};
+            Assert.Equal(expected[1].Name, _usersService.GetAllUsers()[1].Name);
+            ResetList();
+        }
+
+        [Fact]
+        public void GivenNullUserNameWorldOwnerNameOrNonExistentNameShouldThrowException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser("Sue", "Mary"));
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser(null, "Mary"));
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser("Cindy", "Mary"));
         }
     }
 }

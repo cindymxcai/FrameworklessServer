@@ -22,7 +22,6 @@ namespace FrameworklessServer
             {
                 var context = _listener.GetContext();
                 var segmentedUrl = context.Request.Url.Segments.Aggregate("", (current, segment) => current + segment);
-                
                 var request = new Request {Method = context.Request.HttpMethod, Path = segmentedUrl, Body = context};
                 var response = _controller.HandleRequest(request).Body;
                 

@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using FrameworklessServer.Controllers;
 using FrameworklessServer.Data.Model;
@@ -22,7 +23,6 @@ namespace FrameworklessServerTests
         public void GetAllUsersShouldReturnListOfAllUsers()
         {
             //todo do this!!
-            var mockUser = new TestUserService();
             var controller = new Controller(_usersService);
 
            var expectedBody = @"[{""Name"":""Cindy""}]";
@@ -84,9 +84,31 @@ namespace FrameworklessServerTests
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
             ResetList();
         }
-    }
 
-    public class TestUserService
-    {
+        [Fact]
+        public void PutMethodShouldReturnOkStatusIfUserSuccessfullyUpdated()
+        {
+            var controller = new Controller(_usersService);
+            var bob = new User("Bob");
+            _usersService.Add(bob);
+            Assert.Contains(_usersService.GetAllUsers(), u => u.Name == bob.Name);
+            var response = controller.UpdateUser("Bob", "Sue");
+            Assert.DoesNotContain(_usersService.GetAllUsers(), u => u.Name == bob.Name);
+
+            Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+            ResetList();
+        }
+
+        [Fact]
+        public void PutMethodShouldReturnNotFoundIfUpdatedNonExistentUserOrNullUser()
+        {
+           var controller = new Controller(_usersService);
+           var response = controller.UpdateUser("Bob", "Sue");
+           Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+
+           response = controller.UpdateUser(null, "Mary");
+           Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+           ResetList();
+        }
     }
 }

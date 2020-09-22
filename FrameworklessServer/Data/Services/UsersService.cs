@@ -32,9 +32,9 @@ namespace FrameworklessServer.Data.Services
         
         public void Delete(string name)
         {
-            if (name == _owner.Name)
+            if (name == _owner.Name)  //todo null and not existing
                 throw new ArgumentException("Cindy owns this world! Cannot delete");
-
+            
             var allUsers = GetAllUsers();
             allUsers.Remove(allUsers.First(u => u.Name == name));
             CreateNewJArray(allUsers);
@@ -46,8 +46,6 @@ namespace FrameworklessServer.Data.Services
             var newJson = new JArray(newUsers);
             using StreamWriter streamWriter = File.CreateText(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json" ));
             streamWriter.WriteLine(newJson);
-            // var streamWriter = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "UsersList.json" ));
-            
         }
 
         public  List<User> GetAllUsers()
@@ -65,6 +63,18 @@ namespace FrameworklessServer.Data.Services
             var users = GetAllUsers();
             return users.Find(p => String.Equals(p.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
-        
+
+        public void UpdateUser(string originalName, string newName)
+        {
+            if (originalName == _owner.Name)
+            {
+                throw new InvalidOperationException();
+            }
+            var users = GetAllUsers();
+            var userToUpdate = users.First(u => u.Name == originalName);
+            userToUpdate.Name = newName;
+            CreateNewJArray(users);
+            
+        }
     }
 }

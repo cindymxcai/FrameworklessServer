@@ -10,5 +10,6 @@ namespace FrameworklessServer.Data.Services
         void Delete(string name);
         List<User> GetAllUsers();
         User Get(string name);
+        void UpdateUser(string originalName, string newName);
     }
 }
