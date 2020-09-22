@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http;
 
 namespace FrameworklessServer
@@ -6,5 +7,6 @@ namespace FrameworklessServer
     {
         public string Path;
         public string Method;
+        public HttpListenerContext Body;
     }
 }

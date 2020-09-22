@@ -1,6 +1,4 @@
 using System.Net;
-using System.Net.Http;
-using FrameworklessServer;
 using FrameworklessServer.Controllers;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
@@ -10,37 +8,78 @@ namespace FrameworklessServerTests
 {
     public class ControllerTests
     {
+        private readonly UsersService _usersService = new UsersService();
+
+        private void ResetList()
+        {
+            var  allUsers = _usersService.GetAllUsers();
+            allUsers.RemoveAll(user => user.Name != "Cindy");
+            _usersService.CreateNewJArray(allUsers);
+        }
+        
         [Fact]
         public void GetAllUsersShouldReturnListOfAllUsers()
         {
-            var userService = new UsersService();
-            var controller = new Controller(userService);
+            var controller = new Controller(_usersService);
 
            var expectedBody = @"[{""Name"":""Cindy""}]";
            var response = controller.GetAllUsers();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(expectedBody,response.Body);
+            ResetList();
         }
 
         [Fact]
         public void AddUserShouldReturnNoUserResponseWhenNullUser()
         {
-            var userService = new UsersService();
-            var controller = new Controller(userService);
+            var controller = new Controller(_usersService);
             var response = controller.AddUser(null);
             
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            ResetList();
         }
 
         [Fact]
         public void AddUserShouldReturnOkResponseWhenValidUser()
         {
-            var userService = new UsersService();
-            var controller = new Controller(userService);
-            var response = controller.AddUser(new User("Cindy"));
+            var controller = new Controller(_usersService);
+            var response = controller.AddUser(new User("Mary"));
             
             Assert.Equal("User added", response.Body);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            ResetList();
+        }
+
+        [Fact]
+        public void DeleteUserShouldReturnSuccessResponseIfUserSuccessfullyDeleted()
+        {
+            var controller = new Controller(_usersService);
+            controller.AddUser(new User("Bob"));
+            var response = controller.DeleteUser( "Bob");
+            
+            Assert.Equal("User deleted", response.Body);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            ResetList();
+        }
+
+        [Fact]
+        public void DeleteUserShouldReturnNotFoundResponseIfUserDoesNotExist()
+        {
+            var controller = new Controller(_usersService);
+            var response = controller.DeleteUser( "Bob");
+            
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            ResetList();
+        }
+        
+        [Fact]
+        public void DeleteUserShouldReturnNotFoundResponseIfUserNameIsNull()
+        {
+            var controller = new Controller(_usersService);
+            var response = controller.DeleteUser( null);
+            
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+            ResetList();
         }
     }
 }

@@ -10,7 +10,6 @@ namespace FrameworklessServer
     {
         public  Response Write(IUserService usersService)
         {
-            var names = string.Join("\n", usersService.GetAllUsers().Select(u => u.Name));
             return new Response{Body = JsonSerializer.Serialize(usersService.GetAllUsers()), StatusCode = HttpStatusCode.OK};
         }
     }
