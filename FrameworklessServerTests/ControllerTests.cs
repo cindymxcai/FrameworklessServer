@@ -1,114 +1,105 @@
-using System;
+using System.Collections.Generic;
 using System.Net;
 using FrameworklessServer.Controllers;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
+using Moq;
 using Xunit;
 
 namespace FrameworklessServerTests
 {
     public class ControllerTests
     {
-        private readonly UsersService _usersService = new UsersService();
-        //todo inject test user service
+        private static readonly IUserService UsersService = new UsersService();
+         private readonly Controller _controller = new Controller(UsersService);
 
-        private void ResetList()
+         public ControllerTests()
+         {
+             ResetList();
+         }
+
+        private static void ResetList()
         {
-            var  allUsers = _usersService.GetAllUsers();
+            var  allUsers = UsersService.GetAllUsers();
             allUsers.RemoveAll(user => user.Name != "Cindy");
-            _usersService.CreateNewJArray(allUsers);
+            UsersService.CreateNewJArray(allUsers);
         }
         
         [Fact]
         public void GetAllUsersShouldReturnListOfAllUsers()
         {
-            //todo do this!!
-            var controller = new Controller(_usersService);
-
-           var expectedBody = @"[{""Name"":""Cindy""}]";
-           var response = controller.GetAllUsers();
+            var expectedBody = @"[{""Name"":""Cindy""}]";
+           var response = _controller.GetAllUsers();
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Equal(expectedBody,response.Body);
-            ResetList();
         }
 
         [Fact]
         public void AddUserShouldReturnNoUserResponseWhenNullUser()
         {
-            var controller = new Controller(_usersService);
-            var response = controller.AddUser(null);
+            var response = _controller.AddUser(null);
             
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            ResetList();
         }
 
         [Fact]
         public void AddUserShouldReturnOkResponseWhenValidUser()
         {
-            var controller = new Controller(_usersService);
-            var response = controller.AddUser(new User("Mary"));
+            var response = _controller.AddUser(new User("Mary"));
             
             Assert.Equal("User added", response.Body);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            ResetList();
         }
 
         [Fact]
         public void DeleteUserShouldReturnSuccessResponseIfUserSuccessfullyDeleted()
         {
-            var controller = new Controller(_usersService);
-            controller.AddUser(new User("Bob"));
-            var response = controller.DeleteUser( "Bob");
+            _controller.AddUser(new User("Bob"));
+            var response = _controller.DeleteUser( "Bob");
             
             Assert.Equal("User deleted", response.Body);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-            ResetList();
         }
 
         [Fact]
         public void DeleteUserShouldReturnNotFoundResponseIfUserDoesNotExist()
         {
-            var controller = new Controller(_usersService);
-            var response = controller.DeleteUser( "Bob");
+            var response = _controller.DeleteUser( "Bob");
             
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            ResetList();
         }
         
         [Fact]
         public void DeleteUserShouldReturnNotFoundResponseIfUserNameIsNull()
         {
-            var controller = new Controller(_usersService);
-            var response = controller.DeleteUser( null);
+            var response = _controller.DeleteUser( null);
             
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            ResetList();
         }
 
         [Fact]
         public void PutMethodShouldReturnOkStatusIfUserSuccessfullyUpdated()
         {
-            var controller = new Controller(_usersService);
-            var bob = new User("Bob");
-            _usersService.Add(bob);
-            Assert.Contains(_usersService.GetAllUsers(), u => u.Name == bob.Name);
+            var userService = new Mock<IUserService>();
+            userService.Setup(u => u.GetAllUsers()).Returns(new List<User> {new User("Cindy"), new User("Bob")});
+            var controller = new Controller(userService.Object);
             var response = controller.UpdateUser("Bob", "Sue");
-            Assert.DoesNotContain(_usersService.GetAllUsers(), u => u.Name == bob.Name);
 
             Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
-            ResetList();
         }
 
         [Fact]
-        public void PutMethodShouldReturnNotFoundIfUpdatedNonExistentUserOrNullUser()
+        public void PutMethodShouldReturnNotFoundIfUpdatedNonExistentUser()
         {
-           var controller = new Controller(_usersService);
-           var response = controller.UpdateUser("Bob", "Sue");
+           var response = _controller.UpdateUser("Bob", "Sue");
            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-
-           response = controller.UpdateUser(null, "Mary");
-           Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-           ResetList();
         }
+
+        [Fact]
+        public void PutMethodShouldReturnNotFoundIfUpdatedNullUser()
+        {
+            var response = _controller.UpdateUser(null, "Mary");
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }    
     }
 }
