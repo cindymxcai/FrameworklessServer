@@ -6,7 +6,6 @@ namespace FrameworklessServer.Data.Model
         {
             Name = name;
         }
-
-        public string Name { get; }
+        public string Name { get; set; }
     }
 }

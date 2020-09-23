@@ -10,6 +10,10 @@ namespace FrameworklessServerTests
     {
         private readonly UsersService _usersService = new UsersService();
 
+        public UsersServiceTests()
+        {
+            ResetList();
+        }
         private void ResetList()
         {
              var  allUsers = _usersService.GetAllUsers();
@@ -23,7 +27,6 @@ namespace FrameworklessServerTests
             var result = _usersService.GetAllUsers();
             Assert.IsType<List<User>>(result);
             Assert.Equal("Cindy", result[0].Name);
-            ResetList();
         }
         
         [Fact]
@@ -34,7 +37,6 @@ namespace FrameworklessServerTests
             var expected = new List<User>{new User("Cindy")};
            
             Assert.Equal(expected[0].Name, result[0].Name);
-            ResetList();
         }
         
         [Fact]
@@ -42,16 +44,10 @@ namespace FrameworklessServerTests
         {
             _usersService.Add(new User("Bob"));
             var result = _usersService.GetAllUsers();
-            var expected = new List<User>
-            {
-                new User("Cindy"), new User("Bob")
-            };
+            var expected = new List<User> {new User("Cindy"), new User("Bob")};
             
             Assert.Equal(2, result.Count);
-            Assert.Equal(expected[0].Name, result[0].Name);
-            Assert.Equal(expected[1].Name, result[1].Name);           
-
-            ResetList();
+            Assert.Equal(expected[1].Name, result[1].Name);
         }
 
         [Fact]
@@ -74,28 +70,22 @@ namespace FrameworklessServerTests
 
             Assert.Equal(3, _usersService.GetAllUsers().Count);
             _usersService.Delete("Bob");
-            var expected = new List<User>
-            {
-                new User("Cindy"), new User("Mary")
-            };
+            var expected = new List<User> {new User("Cindy"), new User("Mary")};
 
             Assert.Equal(2, _usersService.GetAllUsers().Count);
             Assert.Equal(expected[0].Name, _usersService.GetAllUsers()[0].Name);
-            ResetList();
         }
         
         [Fact]
         public void GivenDeletingNameOfWorldOwnerShouldThrowException()
         {
             Assert.Throws<ArgumentException>(() => _usersService.Delete("Cindy"));
-            ResetList();
         }
 
         [Fact]
         public void GivenDeletingNonExistentNameShouldThrowException()
         {
             Assert.Throws<InvalidOperationException>(() => _usersService.Delete("Bob"));
-            ResetList();
         }
 
         [Fact]
@@ -109,7 +99,38 @@ namespace FrameworklessServerTests
             var expected = new User("Mary");
             
             Assert.Equal(expected.Name, result.Name);
-            ResetList();
         }
+
+        [Fact]
+        public void GivenUserNameShouldUpdateToNewName()
+        {
+            _usersService.Add(new User("Bob"));
+            var expected = new List<User> {new User("Cindy"), new User("Bob")};
+            Assert.Equal(expected[1].Name, _usersService.GetAllUsers()[1].Name);
+
+            _usersService.UpdateUser("Bob", "Mary");
+            
+             expected = new List<User> {new User("Cindy"), new User("Mary")};
+            Assert.Equal(expected[1].Name, _usersService.GetAllUsers()[1].Name);
+        }
+
+        [Fact]
+        public void GivenNonExistentNameUpdateShouldThrowException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser("Sue", "Mary"));
+        }
+
+        [Fact]
+        public void GivenNullUserNameUpdateShouldThrowException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser(null, "Mary"));
+        }
+
+        [Fact]
+        public void GivenWorldOwnerNameUpdateShouldThrowException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _usersService.UpdateUser("Cindy", "Mary"));
+        }
+        
     }
 }
