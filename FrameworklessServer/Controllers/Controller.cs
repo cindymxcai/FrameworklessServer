@@ -26,7 +26,8 @@ namespace FrameworklessServer.Controllers
             Console.WriteLine(request.Method);
             IResponse response;
             switch (request.Path)
-            {
+            { 
+                //TODO integrate router to determine controller object based on path 
                 case "/" when request.Method == "GET":
                     response = new IndexGreetingResponse();
                     return response.Write(_userService);
