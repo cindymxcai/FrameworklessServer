@@ -1,14 +1,14 @@
 using System.Net;
 using FrameworklessServer.Data.Services;
 
-namespace FrameworklessServer.Responses
+namespace FrameworklessServer.ResponseTypes
 {
     
-    public class GetSingleUserResponse : IResponse
+    public class GetSingleUserResponseType 
     {
         private readonly string _name;
 
-        public GetSingleUserResponse(string name)
+        public GetSingleUserResponseType(string name)
         {
             _name = name;
         }
@@ -18,6 +18,5 @@ namespace FrameworklessServer.Responses
             var user = usersService.Get(_name);
             return new Response{Body = user.Name, StatusCode = HttpStatusCode.OK};
         }
-        
     }
 }
