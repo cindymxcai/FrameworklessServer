@@ -5,9 +5,9 @@ using System.Net;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
 
-namespace FrameworklessServer.Responses
+namespace FrameworklessServer.ResponseTypes
 {
-    public class IndexGreetingResponse : IResponse
+    public class IndexGreetingResponseType 
     {
         public  Response Write(IUserService usersService)
         {

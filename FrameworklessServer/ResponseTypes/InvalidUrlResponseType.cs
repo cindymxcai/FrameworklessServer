@@ -1,11 +1,11 @@
 using System.Net;
 using FrameworklessServer.Data.Services;
 
-namespace FrameworklessServer.Responses
+namespace FrameworklessServer.ResponseTypes
 {
-    public class InvalidUrlResponse : IResponse
+    public class InvalidUrlResponseType 
     {
-        public  Response Write(IUserService usersService)
+        public Response Write(IUserService usersService)
         {
             return new Response {Body = "404 Page Not Found", StatusCode = HttpStatusCode.NotFound};
         }

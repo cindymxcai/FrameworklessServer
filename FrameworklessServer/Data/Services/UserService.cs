@@ -8,11 +8,11 @@ using Newtonsoft.Json.Linq;
 
 namespace FrameworklessServer.Data.Services
 {
-    public class UsersService : IUserService
+    public class UserService : IUserService
     {
         private readonly User _owner;
 
-        public UsersService()
+        public UserService()
         {
             _owner = GetAllUsers()[0];
         }

@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace FrameworklessServer.Responses
+namespace FrameworklessServer
 {
     public class Response
     {

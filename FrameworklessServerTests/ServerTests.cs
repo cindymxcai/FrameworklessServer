@@ -13,9 +13,9 @@ namespace FrameworklessServerTests
         [Fact]
         public async Task SendingAGetRequestShouldReturnCorrectStatusCode()
         {
-            var users = new UsersService();
-            var controller = new Controller(users);
-            var server = new Server( controller);
+            var userService = new UserService();
+            var router = new Router(userService);
+            var server = new Server(router);
             _ = Task.Run(server.Start);
             
             var client = new HttpClient();
