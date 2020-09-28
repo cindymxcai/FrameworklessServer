@@ -13,7 +13,7 @@ namespace FrameworklessServer.Controllers
         }
         public Response HandleRequest(Request request)
         {
-            return request.Method == "GET" ? new IndexGreetingResponseType().Write(_userService) : new InvalidUrlResponseType().Write(_userService);
+            return request.Method == "GET" ? new IndexGreetingResponseType().Write(_userService) : new InvalidUrlResponseType().Write();
         }
     }
 }

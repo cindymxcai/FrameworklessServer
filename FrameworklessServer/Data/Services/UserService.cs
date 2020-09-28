@@ -32,7 +32,7 @@ namespace FrameworklessServer.Data.Services
         
         public void Delete(string name)
         {
-            if (name == _owner.Name)  //todo null and not existing
+            if (name == _owner.Name)  
                 throw new ArgumentException("Cindy owns this world! Cannot delete");
             if (name == null || !GetAllUsers().Exists(u => u.Name == name))
                 throw new InvalidOperationException();
@@ -68,7 +68,7 @@ namespace FrameworklessServer.Data.Services
 
         public void UpdateUser(string originalName, string newName)
         {
-            if (originalName == _owner.Name || originalName == null || !GetAllUsers().Exists(u => u.Name == originalName))
+            if (originalName == _owner.Name || originalName == null || !GetAllUsers().Exists(u => string.Equals(u.Name, originalName, StringComparison.CurrentCultureIgnoreCase)))
                 throw new InvalidOperationException();
             var users = GetAllUsers();
             var userToUpdate = users.First(u => string.Equals(u.Name, originalName, StringComparison.CurrentCultureIgnoreCase));

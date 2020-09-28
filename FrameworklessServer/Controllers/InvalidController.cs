@@ -19,7 +19,7 @@ namespace FrameworklessServer.Controllers
 
         public Response InvalidRequest()
         {
-            return new InvalidUrlResponseType().Write(_userService);
+            return new InvalidUrlResponseType().Write();
         }
     }
 }

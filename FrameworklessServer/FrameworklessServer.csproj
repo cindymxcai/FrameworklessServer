@@ -14,9 +14,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Edit.html">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="UsersList.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="Edit.html" />
+      <None Remove="Edit.cshtml" />
     </ItemGroup>
 
 </Project>
