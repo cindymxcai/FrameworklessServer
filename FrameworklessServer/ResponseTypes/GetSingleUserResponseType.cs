@@ -15,8 +15,7 @@ namespace FrameworklessServer.ResponseTypes
 
         public Response Write(IUserService usersService)
         {
-            var user = usersService.Get(_name);
-            return new Response{Body = user.Name, StatusCode = HttpStatusCode.OK};
+            return usersService.Get(_name) != null ? new Response{Body = usersService.Get(_name).Name, StatusCode = HttpStatusCode.OK} : new InvalidUrlResponseType().Write();
         }
     }
 }

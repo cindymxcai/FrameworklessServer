@@ -19,7 +19,8 @@ namespace FrameworklessServer
             return path switch
             {
                 "/" => new IndexController(_userService),
-                "/users" => new AllUsersController(_userService),
+                "/users"  => new AllUsersController(_userService),
+                "/post" => new PostUsersController(),
                 _ when Regex.IsMatch(path, $"/users/{NameMatch}") => GetNameFromUrl(),
                 _ => new InvalidController(_userService)
             };

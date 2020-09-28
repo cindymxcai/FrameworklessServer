@@ -28,22 +28,21 @@ namespace FrameworklessServer.Controllers
             var body = context.Request.InputStream;
             var streamReader = new StreamReader(body, context.Request.ContentEncoding);
             var json = streamReader.ReadToEnd();
-            return JsonConvert.DeserializeObject<User>(json);
+            return new User(json.Split("=").Last());
         }
 
         public Response UpdateUser(string originalName, string newName)
         {
+            //todo not working!!
             try
             {
                 _userService.UpdateUser(originalName, newName);
                 return new Response{Body = "User Updated", StatusCode = HttpStatusCode.NoContent};
-
             }
             catch (Exception e)
             {
                 return new Response{Body = e.Message, StatusCode = HttpStatusCode.NotFound};
             }
-          
         }
 
         public Response GetNameFromUrl(string url)

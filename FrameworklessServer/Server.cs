@@ -26,10 +26,13 @@ namespace FrameworklessServer
                 var controller = _router.GetController(request.Path);
                 
                 var response = controller.HandleRequest(request).Body;
-                
+
                 var buffer = System.Text.Encoding.UTF8.GetBytes(response);
                 context.Response.ContentLength64 = buffer.Length;
                 context.Response.OutputStream.Write(buffer, 0, buffer.Length);
+                
+                context.Response.OutputStream.Flush();
+                context.Response.OutputStream.Close();
             }
         }
     }

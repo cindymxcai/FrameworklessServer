@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using FrameworklessServer.Data.Model;
 using FrameworklessServer.Data.Services;
@@ -25,20 +26,21 @@ namespace FrameworklessServer.Controllers
                 case "POST": return AddUser(ReadBody(request.Body));
                 case "DELETE": return DeleteUser(ReadBody(request.Body).Name); 
             }
-            return new InvalidUrlResponseType().Write(_userService);
+            return new InvalidUrlResponseType().Write();
         }
         
         private static User ReadBody(HttpListenerContext context)
         {
             var body = context.Request.InputStream;
             var streamReader = new StreamReader(body, context.Request.ContentEncoding);
-            var json = streamReader.ReadToEnd();
-            return JsonConvert.DeserializeObject<User>(json);
+            var rawData = streamReader.ReadToEnd(); 
+            return new User(rawData.Split("=").Last());
         }
 
         public Response GetAllUsers()
         {
             var users = _userService.GetAllUsers();
+
             var newResponse = new Response {Body = JsonSerializer.Serialize(users), StatusCode = HttpStatusCode.OK};
             return newResponse;
         }
